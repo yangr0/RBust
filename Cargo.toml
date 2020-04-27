@@ -1,0 +1,10 @@
+[package]
+name = "RustDir"
+version = "0.1.0"
+authors = ["iinc0gnit0 <iinc0gni0t@pm.me>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = "0.10.4"
