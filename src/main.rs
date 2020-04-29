@@ -4,7 +4,7 @@ use reqwest;
 
 
 // Main
-fn main() -> Result<String, reqwest::Error>> {
+fn main() -> Result<String, reqwest::error::Error>> {
     let mut response = reqwest::get("https://rust-lang.org")?;
     let mut body = String::new();
     response.read_to_string(&mut body)?;
