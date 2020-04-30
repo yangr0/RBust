@@ -3,3 +3,6 @@
 
 # v0.2
 - Added reqwest
+
+# v0.3
+- Added command line args
