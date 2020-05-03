@@ -12,24 +12,22 @@ use reqwest;
 
 // Main
 fn main() {
-    let args: Vec<_> = env::args().collect();
-
-    if args.len() == 1 {
-        request();
-    }
+    match request() {
+        Ok(res) => res,
+        Err(_) => "Error".to_owned()
+    };
 }
 
 
 
 // Make Request
-fn request() -> Result<String, reqwest::error::Error>> {
-    let mut response = reqwest::get("https://rust-lang.org")?;
-    let mut body = String::new();
-    response.read_to_string(&mut body)?;
+fn request() {
+    let response = reqwest::get("https://rustlang.org");
+    let result = if response.status() == 404 {
+        "Page does not exist".to_owned()
+    } else {
+        "Page exist".to_owned()
+    };
 
-    if response.status.trim() == "200" {
-        println!!("Status {}", response.status());
-    }
-
-    Ok(());
+    Ok(result);
 }

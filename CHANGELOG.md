@@ -6,3 +6,6 @@
 
 # v0.3
 - Added command line args
+
+# v0.4
+- Working on handling the request
