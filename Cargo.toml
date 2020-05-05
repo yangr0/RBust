@@ -1,5 +1,5 @@
 [package]
-name = "RustDir"
+name = "RBust"
 version = "0.1.0"
 authors = ["iinc0gnit0 <iinc0gni0t@pm.me>"]
 edition = "2018"
@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 reqwest = "0.10.4"
+tokio = {version = "0.2.20", features = ["macros"]}
