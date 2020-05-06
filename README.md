@@ -1,4 +1,4 @@
-# RustDir
+# RBust
 [ Super Fast Fuzzer in Rust ]
 
 # Notes for collaborator
