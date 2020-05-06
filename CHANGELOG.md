@@ -1,3 +1,7 @@
+# v0.0.7
+- Read from file
+- Interpret request
+
 # v0.0.6
 - Working on reading from file
 
