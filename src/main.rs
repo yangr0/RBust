@@ -1,11 +1,12 @@
 // Created by inc0gnit0 / skript0r
-// Version v0.0.7
+// Version v0.0.8
 // 5/6/20
 
 
 
 // Dependencies
 use reqwest; // 0.10.4
+use rayon::iter::{ParallelIterator, IntoParallelRefIterator}; // 1.3.0
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -37,6 +38,7 @@ fn readfile() {
             Err(_) => "\x1b[91m[!]Request Failed, please check if you have internet connection".to_owned(),
         };
         println!("{}", result);
+        thread(result);
     }
 }
 
@@ -50,14 +52,21 @@ async fn request(url: String) -> Result<String, reqwest::Error> {
     // Intrepreting the status code
     let result =
         if response.status() == 404 {
-            "\x1b[91m[-]".to_owned()
+            "\x1b[91m[-] ".to_owned()
         } else {
-            "\x1b[92m[+]".to_owned()
+            "\x1b[92m[+] ".to_owned()
         };
     Ok(result)
 
 }
 
+
+
+// Multi threading
+fn thread(url: String) {
+    let v = vec![readfile()];
+    v.par_iter().for_each(|url| request(url));
+}
 
 
 // Main

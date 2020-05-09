@@ -1,3 +1,7 @@
+# v0.0.8
+- Added install.sh
+- Working on multi threading
+
 # v0.0.7
 - Read from file
 - Interpret request
