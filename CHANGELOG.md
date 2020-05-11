@@ -1,3 +1,6 @@
+# v0.0.9
+- Finish everything
+
 # v0.0.8
 - Added install.sh
 - Working on multi threading

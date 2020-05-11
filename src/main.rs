@@ -1,76 +1,93 @@
 // Created by inc0gnit0 / skript0r
-// Version v0.0.8
-// 5/6/20
+// v0.0.9 
+// 5/10/20
 
 
 
 // Dependencies
-use reqwest; // 0.10.4
-use rayon::iter::{ParallelIterator, IntoParallelRefIterator}; // 1.3.0
+use rayon::prelude::*;
+use isahc::prelude::*;
+use std::io::{BufReader, prelude::*};
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::env::args;
+use std::time::Duration;
+use std::process::exit;
 
-
-
-// Colors
-const RED: &str = "\x1b[91m";
-const GREEN: &str = "\x1b[92m";
-const YELLOW: &str = "\x1b[93m";
-const BLUE: &str = "\x1b[94m";
-const MAGENTA: &str = "\x1b[95m";
-const RESET: &str = "\x1b[0m";
-
-
-
-// Read from file
-fn readfile() {
-    let filepath = "default.txt";
-    let file = File::open(filepath).unwrap();
-    let reader = BufReader::new(file);
-
-    for (_index, line) in reader.lines().enumerate() {
-        let line = line.unwrap();
-        let url = "https://github.com/";
-        let full_url = url.to_owned() + &line; // Add the URL and wordlist together
-        // Output
-        let result = match request(full_url) {
-            Ok(response) => response + url + &line,
-            Err(_) => "\x1b[91m[!]Request Failed, please check if you have internet connection".to_owned(),
-        };
-        println!("{}", result);
-        thread(result);
-    }
-}
-
-
-
-// Make Request
-#[tokio::main]
-async fn request(url: String) -> Result<String, reqwest::Error> {
-    let response = reqwest::get(&url)
-        .await?;
-    // Intrepreting the status code
-    let result =
-        if response.status() == 404 {
-            "\x1b[91m[-] ".to_owned()
-        } else {
-            "\x1b[92m[+] ".to_owned()
-        };
-    Ok(result)
-
-}
-
-
-
-// Multi threading
-fn thread(url: String) {
-    let v = vec![readfile()];
-    v.par_iter().for_each(|url| request(url));
-}
 
 
 // Main
-fn main() {
-    // Handling errors in request()
-    readfile();
+fn main() -> std::io::Result<()> {
+    let target_host = check_args();
+    let mut urls:Vec<String> = Vec::new();
+    let fd = File::open("default.txt")?;
+    for url in BufReader::new(fd).lines() {
+    let url = url.unwrap();
+    let url = url.trim().to_owned();
+    urls.push(url);
+    }
+    urls.par_iter().for_each(|url_path| probe(&target_host, &url_path).unwrap());
+    Ok(())
 }
+
+
+
+// Check arguments
+fn check_args() -> String {
+    let args = args().map(|a| a.to_owned()).collect::<Vec<String>>();
+    if args.len() != 2 {
+        show_usage();
+    }
+    return args[1].to_owned()
+}
+
+
+
+// Usages message
+fn show_usage() {
+    println!("Usage: ./rbust <https://example.com>");
+    exit(1);
+}
+
+
+
+// Make requests
+fn probe(host:&str, url:&str) -> Result<(), Box<dyn std::error::Error>>{
+    let target = format!("{}/{}", &host, &url);
+    let target = url_encode(&target);
+    let response = Request::head(&target)
+        .timeout(Duration::new(1,0))
+        .body("")?
+        .send()?;
+    if response.status() == 404 {
+        print!("");
+    } else {
+        println!("[+] {}", target)
+    }
+    Ok(())
+}
+
+// Sanitize URL
+fn url_encode(data: &str) -> String {
+    fn str_to_ascii_num(char: &str) -> u8 {
+        let chars: Vec<_> = char.bytes().map(|c| c as char).collect();
+        return chars[0] as u8
+    }
+    let unsafe_chars:   Vec<&str>  = vec![" ", "'", "\"", ">", "<", "#", "%", "{", "}", "|", "\\", "^", "~", "[", "]", "+"];
+    let unsafe_nums:    Vec<u8>    = unsafe_chars.iter().map(|c| str_to_ascii_num(c)).collect();
+    let supplied_nums:  Vec<u8>    = data.bytes().map(|b| b as u8).collect();
+    let mut buffer = String::new();
+    for num in supplied_nums {
+        if unsafe_nums.contains(&num) {
+        let sanitized = format!("%{:x?}", num).to_uppercase();
+        buffer.push_str(&sanitized);
+        } else {
+        let sanitized = format!("{}", num as char);
+        buffer.push_str(&sanitized);
+        }
+    }
+    return buffer
+}
+
+/*
+        -<>-.-ᕙᕘ-.-<>-
+*/
