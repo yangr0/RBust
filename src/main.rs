@@ -1,6 +1,6 @@
 // Created by inc0gnit0 / skript0r
-// v0.0.9 
-// 5/10/20
+// v1.0
+// 5/12/20
 
 
 
@@ -17,6 +17,7 @@ use std::process::exit;
 
 // Main
 fn main() -> std::io::Result<()> {
+    banner();
     let target_host = check_args();
     let mut urls:Vec<String> = Vec::new();
     let fd = File::open("default.txt")?;
@@ -27,6 +28,23 @@ fn main() -> std::io::Result<()> {
     }
     urls.par_iter().for_each(|url_path| probe(&target_host, &url_path).unwrap());
     Ok(())
+}
+
+
+
+// Banner
+fn banner() {
+    println!("\x1b[91m                https://github.com/iinc0gnit0/RBust
+
+    \x1b[93m ▄████████ ▀█████████▄  ███    █▄     ▄████████     ███     
+    ███    ███   ███    ███ ███    ███   ███    ███ ▀█████████▄ 
+    ███    ███   ███    ███ ███    ███   ███    █▀     ▀███▀▀██ 
+   ▄███▄▄▄▄██▀  ▄███▄▄▄██▀  ███    ███   ███            ███   ▀ 
+  ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
+  ▀███████████   ███    ██▄ ███    ███          ███     ███     
+    ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
+    ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.0\x1b[93m
+    ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r\n")
 }
 
 
@@ -44,7 +62,7 @@ fn check_args() -> String {
 
 // Usages message
 fn show_usage() {
-    println!("Usage: ./rbust <https://example.com>");
+    println!("\x1b[91mUsage: ./rbust <https://example.com>");
     exit(1);
 }
 
@@ -59,9 +77,11 @@ fn probe(host:&str, url:&str) -> Result<(), Box<dyn std::error::Error>>{
         .body("")?
         .send()?;
     if response.status() == 404 {
-        println!("\x1b[91m404 [-] {}", target);
+        print!("");
     } else if response.status() == 200 {
         println!("\x1b[92m200 [+] {}", target)
+    } else if response.status() == 403 {
+        println!("\x1b[93m403 [*] {}", target)
     } else {
         println!("\x1b[93m{} [*] {}", response.status(), target)
     }
