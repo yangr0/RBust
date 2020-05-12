@@ -2,6 +2,10 @@
 
 RBust is blazing fast directory bruteforce tool written in Rust
 
+# What is so great about RBust?
+
+RBust will choose the maximum amount of threads for you based on your CPU
+
 # Installation
 
 Install using this quick and easy one-liner
@@ -21,6 +25,10 @@ git clone https://github.com/iinc0gnit0/RBust && cd RBust && chmod +x * && ./ins
 It is recommended to update once a week
 
 `git pull`
+
+# Still in the working
+
+We are still working on to make it better so you may experience some bugs or errors. Please report them to one of the creators or create an issue.
 
 # Credits
 
