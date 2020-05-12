@@ -4,6 +4,8 @@ RBust is blazing fast directory bruteforce tool written in Rust
 
 # Installation
 
+Install using this quick and easy one-liner
+
 ```bash
 git clone https://github.com/iinc0gnit0/RBust && cd RBust && chmod +x * && ./install.sh
 ```
