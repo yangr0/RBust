@@ -14,6 +14,12 @@ Install using this quick and easy one-liner
 git clone https://github.com/iinc0gnit0/RBust && cd RBust && chmod +x * && ./install.sh
 ```
 
+You can also install the binary from the [release page](https://github.com/iinc0gnit0/RBust/releases)
+
+MD5 checksum: `FC61EE63F4EC35B32DE0DFEDE10D0E95`
+
+SHA1 checksum: `B93315F272EE9F0EC51BFA7F9703A262D5D1776F`
+
 # Usage
 
 ```bash
