@@ -5,8 +5,8 @@
 
 
 // Dependencies
-use rayon::prelude::*;
-use isahc::prelude::*;
+use rayon::prelude::*; // 1.3.0
+use isahc::prelude::*; // 0.9.2
 use std::io::{BufReader, prelude::*};
 use std::fs::File;
 use std::env::args;
@@ -59,9 +59,11 @@ fn probe(host:&str, url:&str) -> Result<(), Box<dyn std::error::Error>>{
         .body("")?
         .send()?;
     if response.status() == 404 {
-        print!("");
+        println!("\x1b[91m404 [-] {}", target);
+    } else if response.status() == 200 {
+        println!("\x1b[92m200 [+] {}", target)
     } else {
-        println!("[+] {}", target)
+        println!("\x1b[93m{} [*] {}", response.status(), target)
     }
     Ok(())
 }
@@ -87,7 +89,3 @@ fn url_encode(data: &str) -> String {
     }
     return buffer
 }
-
-/*
-        -<>-.-ᕙᕘ-.-<>-
-*/
