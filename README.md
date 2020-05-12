@@ -24,4 +24,4 @@ It is recommended to update once a week
 
 # Credits
 
-This tool was created by [inc0gnit0](https://github.com/iinc0gni0t) and [skript0r](https://github.com/green0octagon)
+This tool was created by [inc0gnit0](https://github.com/iinc0gni0t) and [skript0r](https://github.com/green0ctagon)
