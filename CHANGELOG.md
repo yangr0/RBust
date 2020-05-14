@@ -1,5 +1,5 @@
-# 1.1
+# v1.1
 - Added command line arguments for more flexibility
 
-# 1.0
+# v1.0
 - First release
