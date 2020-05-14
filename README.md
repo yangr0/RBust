@@ -19,7 +19,7 @@ You can also install the binary from the release page [here](https://github.com/
 # Usage
 
 ```bash
-./rbust -w http://example.com -w default.txt
+./rbust -u http://example.com -w default.txt
 ```
 
 Show the help text using this command
