@@ -9,7 +9,7 @@ use rayon::prelude::*; // 1.3.0
 use isahc::prelude::*; // 0.9.2
 use std::io::{BufReader, prelude::*};
 use std::fs::File;
-use std::env::args;
+use clap::App;
 use std::time::Duration;
 use std::process::exit;
 
@@ -18,9 +18,22 @@ use std::process::exit;
 // Main
 fn main() -> std::io::Result<()> {
     banner();
-    let target_host = check_args();
+    // Command line arguments
+    let args = App::new("RBust")
+        .version("v1.1")
+        .author("inc0gnit0 <iinc0gnit0@pm.me | skript0r <skript0r@protonmail.com")
+        .about("RBust is a blazing fast web directory bruteforce tool")
+        .args_from_usage(
+            "-u, --url=[TARGET_URL] 'Sets your target URL'")
+        .args_from_usage(
+            "-w, --wordlist=[PATH_TO_WORDLIST] 'Sets your wordlist file'")
+        .get_matches();
+
+    let target_host = args.value_of("url").unwrap();
+    let wordlist = args.value_of("wordlist").unwrap(); 
+    // Read file
     let mut urls:Vec<String> = Vec::new();
-    let fd = File::open("default.txt")?;
+    let fd = File::open(wordlist)?;
     for url in BufReader::new(fd).lines() {
     let url = url.unwrap();
     let url = url.trim().to_owned();
@@ -43,19 +56,8 @@ fn banner() {
   ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
   ▀███████████   ███    ██▄ ███    ███          ███     ███     
     ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-    ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.0\x1b[93m
+    ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.1\x1b[93m
     ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r\n")
-}
-
-
-
-// Check arguments
-fn check_args() -> String {
-    let args = args().map(|a| a.to_owned()).collect::<Vec<String>>();
-    if args.len() != 2 {
-        show_usage();
-    }
-    return args[1].to_owned()
 }
 
 
