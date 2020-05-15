@@ -2,7 +2,7 @@
 
 RBust is blazing fast directory bruteforce tool written in Rust
 
-<script id="asciicast-d2drRZkLdcA3YWgBL1ilnVAfD" src="https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD.js" async></script>
+[![asciicast](https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD.svg)](https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD)
 
 # What is so great about RBust?
 
