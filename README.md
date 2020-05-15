@@ -2,6 +2,8 @@
 
 RBust is blazing fast directory bruteforce tool written in Rust
 
+<script id="asciicast-d2drRZkLdcA3YWgBL1ilnVAfD" src="https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD.js" async></script>
+
 # What is so great about RBust?
 
 RBust will choose the maximum amount of threads for you based on your CPU
