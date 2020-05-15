@@ -1,6 +1,8 @@
+// https://github.com/iinc0gnit0/RBust
+// You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.0
-// 5/12/20
+// v1.2
+// 5/14/20
 
 
 
@@ -11,7 +13,6 @@ use std::io::{BufReader, prelude::*};
 use std::fs::File;
 use clap::App;
 use std::time::Duration;
-use std::process::exit;
 
 
 
@@ -20,8 +21,8 @@ fn main() -> std::io::Result<()> {
     banner();
     // Command line arguments
     let args = App::new("RBust")
-        .version("v1.1")
-        .author("inc0gnit0 <iinc0gnit0@pm.me | skript0r <skript0r@protonmail.com")
+        .version("v1.2")
+        .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("RBust is a blazing fast web directory bruteforce tool")
         .args_from_usage(
             "-u, --url=[TARGET_URL] 'Sets your target URL'")
@@ -47,25 +48,17 @@ fn main() -> std::io::Result<()> {
 
 // Banner
 fn banner() {
-    println!("\x1b[91m                https://github.com/iinc0gnit0/RBust
+    println!("\x1b[91m              https://github.com/iinc0gnit0/RBust
 
-    \x1b[93m ▄████████ ▀█████████▄  ███    █▄     ▄████████     ███     
-    ███    ███   ███    ███ ███    ███   ███    ███ ▀█████████▄ 
-    ███    ███   ███    ███ ███    ███   ███    █▀     ▀███▀▀██ 
-   ▄███▄▄▄▄██▀  ▄███▄▄▄██▀  ███    ███   ███            ███   ▀ 
-  ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
-  ▀███████████   ███    ██▄ ███    ███          ███     ███     
-    ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-    ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.1\x1b[93m
-    ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r\n")
-}
-
-
-
-// Usages message
-fn show_usage() {
-    println!("\x1b[91mUsage: ./rbust <https://example.com>");
-    exit(1);
+\x1b[93m   ▄████████ ▀█████████▄  ███    █▄     ▄████████     ███     
+  ███    ███   ███    ███ ███    ███   ███    ███ ▀█████████▄ 
+  ███    ███   ███    ███ ███    ███   ███    █▀     ▀███▀▀██ 
+ ▄███▄▄▄▄██▀  ▄███▄▄▄██▀  ███    ███   ███            ███   ▀ 
+▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
+▀███████████   ███    ██▄ ███    ███          ███     ███     
+  ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.2\x1b[93m
+  ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r\n")
 }
 
 
@@ -74,10 +67,11 @@ fn show_usage() {
 fn probe(host:&str, url:&str) -> Result<(), Box<dyn std::error::Error>>{
     let target = format!("{}/{}", &host, &url);
     let target = url_encode(&target);
-    let response = Request::head(&target)
+    let response = Request::head(&target) // Make HEAD request
         .timeout(Duration::new(1,0))
         .body("")?
         .send()?;
+    // Intrepret reponse code
     if response.status() == 404 {
         print!("");
     } else if response.status() == 200 {
@@ -89,6 +83,8 @@ fn probe(host:&str, url:&str) -> Result<(), Box<dyn std::error::Error>>{
     }
     Ok(())
 }
+
+
 
 // Sanitize URL
 fn url_encode(data: &str) -> String {
