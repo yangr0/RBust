@@ -1,8 +1,8 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.2
-// 5/14/20
+// v1.3
+// 5/17/20
 
 
 
@@ -11,7 +11,7 @@ use rayon::prelude::*; // 1.3.0
 use isahc::prelude::*; // 0.9.2
 use std::io::{BufReader, prelude::*};
 use std::fs::File;
-use clap::App;
+use clap::{Arg, App};
 use std::time::Duration;
 
 
@@ -21,17 +21,27 @@ fn main() -> std::io::Result<()> {
     banner();
     // Command line arguments
     let args = App::new("RBust")
-        .version("v1.2")
+        .version("v1.3")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("RBust is a blazing fast web directory bruteforce tool")
         .args_from_usage(
             "-u, --url=[TARGET_URL] 'Sets your target URL'")
         .args_from_usage(
             "-w, --wordlist=[PATH_TO_WORDLIST] 'Sets your wordlist file'")
+        .arg(Arg::with_name("v")
+            .short("v")
+            .long("verbose")
+            .help("Shows verbose output"))
         .get_matches();
 
     let target_host = args.value_of("url").unwrap();
-    let wordlist = args.value_of("wordlist").unwrap(); 
+    let wordlist = args.value_of("wordlist").unwrap();
+    let mut verbose = 0;
+    match args.occurrences_of("v") {
+        0 => verbose = 0,
+        1 => verbose = 1,
+        _ => println!("\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!"),
+    };
     // Read file
     let mut urls:Vec<String> = Vec::new();
     let fd = File::open(wordlist)?;
@@ -40,7 +50,7 @@ fn main() -> std::io::Result<()> {
     let url = url.trim().to_owned();
     urls.push(url);
     }
-    urls.par_iter().for_each(|url_path| probe(&target_host, &url_path).unwrap());
+    urls.par_iter().for_each(|url_path| probe(&target_host, &url_path, verbose).unwrap());
     Ok(())
 }
 
@@ -57,14 +67,14 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.2\x1b[93m
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.3\x1b[93m
   ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r\n")
 }
 
 
 
 // Make requests
-fn probe(host:&str, url:&str) -> Result<(), Box<dyn std::error::Error>>{
+fn probe(host:&str, url:&str, verbose: i64) -> Result<(), Box<dyn std::error::Error>>{
     let target = format!("{}/{}", &host, &url);
     let target = url_encode(&target);
     let response = Request::head(&target) // Make HEAD request
@@ -72,14 +82,26 @@ fn probe(host:&str, url:&str) -> Result<(), Box<dyn std::error::Error>>{
         .body("")?
         .send()?;
     // Intrepret reponse code
-    if response.status() == 404 {
-        print!("");
-    } else if response.status() == 200 {
-        println!("\x1b[92m200 [+] {}", target)
-    } else if response.status() == 403 {
-        println!("\x1b[93m403 [*] {}", target)
-    } else {
-        println!("\x1b[93m{} [*] {}", response.status(), target)
+    if verbose == 0 {
+        if response.status() == 404 {
+            print!("");
+        } else if response.status() == 200 {
+            println!("\x1b[92m200 [+] {}", target)
+        } else if response.status() == 403 {
+            println!("\x1b[93m403 [*] {}", target)
+        } else {
+            println!("\x1b[93m{} [*] {}", response.status(), target)
+        }
+    } else if verbose == 1 {
+        if response.status() == 404 {
+            println!("\x1b[91m404 [-] {}", target);
+        } else if response.status() == 200 {
+            println!("\x1b[92m200 [+] {}", target)
+        } else if response.status() == 403 {
+            println!("\x1b[93m403 [*] {}", target)
+        } else {
+            println!("\x1b[93m{} [*] {}", response.status(), target)
+        }
     }
     Ok(())
 }

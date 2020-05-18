@@ -1,3 +1,6 @@
+# v1.3
+- Added verbose option
+
 # v1.2
 - Minor adjustments
 
