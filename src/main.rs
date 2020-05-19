@@ -11,7 +11,7 @@ use rayon::prelude::*; // 1.3.0
 use isahc::prelude::*; // 0.9.2
 use std::io::{BufReader, prelude::*};
 use std::fs::File;
-use clap::{Arg, App};
+use clap::{Arg, App}; // 2.33.1
 use std::time::Duration;
 
 
@@ -102,6 +102,8 @@ fn probe(host:&str, url:&str, verbose: i64) -> Result<(), Box<dyn std::error::Er
         } else {
             println!("\x1b[93m{} [*] {}", response.status(), target)
         }
+    } else {
+        println!("Something went wrong!")
     }
     Ok(())
 }
