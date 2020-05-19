@@ -1,5 +1,6 @@
 # v1.3
 - Added verbose option
+- Fixed install.sh
 
 # v1.2
 - Minor adjustments
