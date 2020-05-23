@@ -1,3 +1,6 @@
+# v1.4
+- Fixed bug where color would stay after exiting program
+
 # v1.3
 - Added verbose option
 - Fixed install.sh
