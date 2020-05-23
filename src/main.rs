@@ -75,7 +75,7 @@ fn probe(host: &str, url: &str, verbose: i64) -> Result<(), Box<dyn std::error::
     let target = format!("{}/{}", &host, &url);
     let target = url_encode(&target);
     let response = Request::head(&target) // Make HEAD request
-        .timeout(Duration::new(1, 0))
+        .timeout(Duration::new(5, 0))
         .body("")?
         .send()?;
     // Intrepret reponse code
