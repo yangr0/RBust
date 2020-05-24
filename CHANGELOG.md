@@ -1,3 +1,6 @@
+# v1.5
+- Added option to set timeouts
+
 # v1.4
 - Fixed bug where color would stay after exiting program
 

@@ -1,8 +1,8 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.4
-// 5/23/20
+// v1.5
+// 5/24/20
 
 // Dependencies
 use clap::{App, Arg}; // 2.33.1
@@ -20,8 +20,12 @@ fn main() -> std::io::Result<()> {
         .version("v1.4")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("RBust is a blazing fast web directory bruteforce tool")
-        .args_from_usage("-u, --url=[TARGET_URL] 'Sets your target URL'")
-        .args_from_usage("-w, --wordlist=[PATH_TO_WORDLIST] 'Sets your wordlist file'")
+        .args_from_usage(
+            "
+            -u, --url=[TARGET_URL] 'Sets your target URL'
+            -w, --wordlist=[PATH_TO_WORDLIST] 'Sets your wordlist file'
+            -t, --timeout=[SECONDS] 'Sets the timeout time in seconds Default(10)'",
+        )
         .arg(
             Arg::with_name("v")
                 .short("v")
@@ -33,6 +37,7 @@ fn main() -> std::io::Result<()> {
     let target_host = args.value_of("url").unwrap();
     let wordlist = args.value_of("wordlist").unwrap();
     let mut verbose = 0;
+    let mut timeout = 15;
     match args.occurrences_of("v") {
         0 => verbose = 0,
         1 => verbose = 1,
@@ -40,6 +45,13 @@ fn main() -> std::io::Result<()> {
             "\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!\x1b[0m"
         ),
     };
+    match args.occurrences_of("output") {
+        0 => timeout = 15,
+        1 => timeout = args.value_of("output").unwrap().parse::<u64>().unwrap(),
+        _ => println!(
+            "\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!\x1b[0m"
+        ),
+    }
     // Read file
     let mut urls: Vec<String> = Vec::new();
     let fd = File::open(wordlist)?;
@@ -49,7 +61,7 @@ fn main() -> std::io::Result<()> {
         urls.push(url);
     }
     urls.par_iter()
-        .for_each(|url_path| probe(&target_host, &url_path, verbose).unwrap());
+        .for_each(|url_path| probe(&target_host, &url_path, verbose, timeout).unwrap());
     Ok(())
 }
 
@@ -65,17 +77,22 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.4\x1b[93m
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.5\x1b[93m
   ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r\n\x1b[0m"
     )
 }
 
 // Make requests
-fn probe(host: &str, url: &str, verbose: i64) -> Result<(), Box<dyn std::error::Error>> {
+fn probe(
+    host: &str,
+    url: &str,
+    verbose: i8,
+    timeout: u64,
+) -> Result<(), Box<dyn std::error::Error>> {
     let target = format!("{}/{}", &host, &url);
     let target = url_encode(&target);
     let response = Request::head(&target) // Make HEAD request
-        .timeout(Duration::new(5, 0))
+        .timeout(Duration::new(timeout, 0))
         .body("")?
         .send()?;
     // Intrepret reponse code
