@@ -1,3 +1,6 @@
+# v1.6
+- Added error handling when making the request
+
 # v1.5
 - Added option to set timeouts
 

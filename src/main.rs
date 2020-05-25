@@ -1,8 +1,10 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.5
-// 5/24/20
+// v1.6
+// 5/25/20
+
+
 
 // Dependencies
 use clap::{App, Arg}; // 2.33.1
@@ -11,6 +13,8 @@ use rayon::prelude::*; // 1.3.0
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use std::time::Duration;
+
+
 
 // Main
 fn main() -> std::io::Result<()> {
@@ -60,10 +64,16 @@ fn main() -> std::io::Result<()> {
         let url = url.trim().to_owned();
         urls.push(url);
     }
-    urls.par_iter()
-        .for_each(|url_path| probe(&target_host, &url_path, verbose, timeout).unwrap());
+    urls.par_iter() // Making multithreaded requests
+        .for_each(|url_path| 
+            match probe(&target_host, &url_path, verbose, timeout) {
+                Ok(request) => request,
+                Err(e) => println!("\x1b[31mSomething went wrong, please check if the URL is valid and try changing the timeout time\nError: {}\n\x1b[0m", e),
+            });
     Ok(())
 }
+
+
 
 // Banner
 fn banner() {
@@ -77,10 +87,14 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.5\x1b[93m
-  ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r\n\x1b[0m"
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.6\x1b[93m
+  ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r
+                                
+            \x1b[91mUse command: ./rbust for help\x1b[0m\n"
     )
 }
+
+
 
 // Make requests
 fn probe(
@@ -121,6 +135,8 @@ fn probe(
     }
     Ok(())
 }
+
+
 
 // Sanitize URL
 fn url_encode(data: &str) -> String {
