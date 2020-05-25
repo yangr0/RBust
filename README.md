@@ -10,13 +10,20 @@ RBust will choose the maximum amount of threads for you based on your CPU
 
 # Installation
 
-Install using this quick and easy one-liner
+## Quick Installation
 
-```bash
-git clone https://github.com/iinc0gnit0/RBust && cd RBust && chmod +x * && ./install.sh
-```
+Click [here](https://github.com/iinc0gnit0/RBust/releases/download/v1.6/RBust_v1.6) to install the binary
 
-You can also install the binary from the release page [here](https://github.com/iinc0gnit0/RBust/releases)
+
+## Manual Installation
+
+`git clone https://github.com/iinc0gnit0/RBust`
+
+`cd RBust`
+
+`chmod +x install.sh`
+
+`./install.sh`
 
 # Usage
 
