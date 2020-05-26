@@ -1,10 +1,8 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.6
-// 5/25/20
-
-
+// v1.7
+// 5/26/20
 
 // Dependencies
 use clap::{App, Arg}; // 2.33.1
@@ -14,21 +12,20 @@ use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use std::time::Duration;
 
-
-
 // Main
 fn main() -> std::io::Result<()> {
     banner();
     // Command line arguments
     let args = App::new("RBust")
-        .version("v1.4")
+        .version("v1.7")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("RBust is a blazing fast web directory bruteforce tool")
         .args_from_usage(
             "
-            -u, --url=[TARGET_URL] 'Sets your target URL'
-            -w, --wordlist=[PATH_TO_WORDLIST] 'Sets your wordlist file'
-            -t, --timeout=[SECONDS] 'Sets the timeout time in seconds Default(10)'",
+            -u, --url=[TARGET_URL] 'Sets your target URL(required)'
+            -w, --wordlist=[PATH_TO/_WORDLIST] 'Sets your wordlist file(required)'
+            -t, --timeout=[SECONDS] 'Sets the timeout time in seconds Default(15)'
+            -U, --user-agent=[USER_AGENT] 'Sets the user agent'",
         )
         .arg(
             Arg::with_name("v")
@@ -42,6 +39,7 @@ fn main() -> std::io::Result<()> {
     let wordlist = args.value_of("wordlist").unwrap();
     let mut verbose = 0;
     let mut timeout = 15;
+    let mut ua = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"; // User agent
     match args.occurrences_of("v") {
         0 => verbose = 0,
         1 => verbose = 1,
@@ -52,6 +50,13 @@ fn main() -> std::io::Result<()> {
     match args.occurrences_of("output") {
         0 => timeout = 15,
         1 => timeout = args.value_of("output").unwrap().parse::<u64>().unwrap(),
+        _ => println!(
+            "\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!\x1b[0m"
+        ),
+    };
+    match args.occurrences_of("user-agent") {
+        0 => ua = ua,
+        1 => ua = args.value_of("user-agent").unwrap(),
         _ => println!(
             "\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!\x1b[0m"
         ),
@@ -66,14 +71,12 @@ fn main() -> std::io::Result<()> {
     }
     urls.par_iter() // Making multithreaded requests
         .for_each(|url_path| 
-            match probe(&target_host, &url_path, verbose, timeout) {
+            match probe(&target_host, &url_path, verbose, timeout, ua) {
                 Ok(request) => request,
                 Err(e) => println!("\x1b[31mSomething went wrong, please check if the URL is valid and try changing the timeout time\nError: {}\n\x1b[0m", e),
             });
     Ok(())
 }
-
-
 
 // Banner
 fn banner() {
@@ -87,14 +90,12 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.6\x1b[93m
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.7\x1b[93m
   ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r
                                 
             \x1b[91mUse command: ./rbust for help\x1b[0m\n"
     )
 }
-
-
 
 // Make requests
 fn probe(
@@ -102,12 +103,14 @@ fn probe(
     url: &str,
     verbose: i8,
     timeout: u64,
+    ua: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    let ua = format!("user-agent: {}", ua);
     let target = format!("{}/{}", &host, &url);
     let target = url_encode(&target);
     let response = Request::head(&target) // Make HEAD request
         .timeout(Duration::new(timeout, 0))
-        .body("")?
+        .body(ua)?
         .send()?;
     // Intrepret reponse code
     if verbose == 0 {
@@ -135,8 +138,6 @@ fn probe(
     }
     Ok(())
 }
-
-
 
 // Sanitize URL
 fn url_encode(data: &str) -> String {

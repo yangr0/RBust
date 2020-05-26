@@ -1,3 +1,6 @@
+# v1.7
+- Added user agent
+
 # v1.6
 - Added error handling when making the request
 
