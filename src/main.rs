@@ -1,10 +1,11 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.7
-// 5/26/20
+// v1.9
+// 5/28/20
 
 // Dependencies
+use chrono;
 use clap::{App, Arg}; // 2.33.1
 use isahc::prelude::*; // 0.9.2
 use rayon::prelude::*; // 1.3.0
@@ -17,7 +18,7 @@ fn main() -> std::io::Result<()> {
     banner();
     // Command line arguments
     let args = App::new("RBust")
-        .version("v1.7")
+        .version("v1.9")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("RBust is a blazing fast web directory bruteforce tool")
         .args_from_usage(
@@ -34,7 +35,7 @@ fn main() -> std::io::Result<()> {
                 .help("Shows verbose output"),
         )
         .get_matches();
-
+    // Config variables
     let target_host = args.value_of("url").unwrap();
     let wordlist = args.value_of("wordlist").unwrap();
     let mut verbose = 0;
@@ -69,7 +70,8 @@ fn main() -> std::io::Result<()> {
         let url = url.trim().to_owned();
         urls.push(url);
     }
-    urls.par_iter() // Making multithreaded requests
+    // Making multithreaded requests
+    urls.par_iter()
         .for_each(|url_path| 
             match probe(&target_host, &url_path, verbose, timeout, ua) {
                 Ok(request) => request,
@@ -90,7 +92,7 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.7\x1b[93m
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.9\x1b[93m
   ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r
                                 
             \x1b[91mUse command: ./rbust for help\x1b[0m\n"
@@ -105,33 +107,45 @@ fn probe(
     timeout: u64,
     ua: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let ua = format!("user-agent: {}", ua);
+    let time = chrono::Local::now().format("%T").to_string();
+    let ua = format!("user-agent: {}", ua); // User agent
     let target = format!("{}/{}", &host, &url);
     let target = url_encode(&target);
-    let response = Request::head(&target) // Make HEAD request
+    // Make HEAD request
+    let response = Request::head(&target)
         .timeout(Duration::new(timeout, 0))
         .body(ua)?
         .send()?;
-    // Intrepret reponse code
+    // Intrepret response code
     if verbose == 0 {
         if response.status() == 404 {
             print!("");
         } else if response.status() == 200 {
-            println!("\x1b[92m200 [+] {}\x1b[0m", target)
+            println!("\x1b[92m{} | 200 [+] {}\x1b[0m", time, target)
         } else if response.status() == 403 {
-            println!("\x1b[93m403 [*] {}\x1b[0m", target)
+            println!("\x1b[93m{} | 403 [*] {}\x1b[0m", time, target)
         } else {
-            println!("\x1b[93m{} [*] {}\x1b[0m", response.status(), target)
+            println!(
+                "\x1b[93m{} | {} [*] {}\x1b[0m",
+                time,
+                response.status(),
+                target
+            )
         }
     } else if verbose == 1 {
         if response.status() == 404 {
-            println!("\x1b[91m404 [-] {}\x1b[0m", target);
+            println!("\x1b[91m{} | 404 [-] {}\x1b[0m", time, target);
         } else if response.status() == 200 {
-            println!("\x1b[92m200 [+] {}\x1b[0m", target)
+            println!("\x1b[92m{} | 200 [+] {}\x1b[0m", time, target)
         } else if response.status() == 403 {
-            println!("\x1b[93m403 [*] {}\x1b[0m", target)
+            println!("\x1b[93m{} | 403 [*] {}\x1b[0m", time, target)
         } else {
-            println!("\x1b[93m{} [*] {}\x1b[0m", response.status(), target)
+            println!(
+                "\x1b[93m{} | {} [*] {}\x1b[0m",
+                time,
+                response.status(),
+                target
+            )
         }
     } else {
         println!("\x1b[91mSomething went wrong!\x1b[0m")

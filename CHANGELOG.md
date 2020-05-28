@@ -1,3 +1,8 @@
+# v1.8
+- Added time
+- New README
+- Small fixes
+
 # v1.7
 - Added user agent
 
