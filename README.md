@@ -56,4 +56,4 @@ We are still working on to make it better so you may experience some bugs or err
 
 ### Credits
 
-This tool was created by <a href="https://github.com/iinc0gnit0">inc0gnit0</a> and <a href="https://github.com/green0ctagon">skript0r</a>
+Made with ❤️ by [inc0gnit0](https://github.com/iinc0gnit0) and [skript0r](https://github.com/green0ctagon)
