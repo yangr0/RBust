@@ -6,6 +6,8 @@
 
 RBust is a blazing fast multi-thread web directory bruteforce tool written in Rust
 
+Contribution are always welcome, feel free to create issues and pull requests
+
 ## Features
 
 * Automatically picks the most amount of threads that your system can handle
