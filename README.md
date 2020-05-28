@@ -4,17 +4,23 @@
 ![GitHub followers](https://img.shields.io/github/followers/iinc0gnit0?style=social)
 ![GitHub top language](https://img.shields.io/github/languages/top/iinc0gnit0/RBust)
 
-### What is so great about RBust?
+RBust is a blazing fast multi-thread web directory bruteforce tool written in Rust
 
-RBust will choose the maximum amount of threads for you based on your CPU
+## Features
+
+* Automatically picks the most amount of threads that your system can handle
+
+* Multi-thread
+
+* Quick and easy CLI
+
+* Custom timeout
 
 ## Installation
 
-### Quick Installation
+Go to the following link to install the binary https://github.com/iinc0gnit0/RBust/releases
 
-Click <a href="https://github.com/iinc0gnit0/RBust/releases/download/v1.6/RBust_v1.6">here</a> to install the binary
-
-### Manual Installation
+Manual installation instructions below:
 
 `git clone https://github.com/iinc0gnit0/RBust`
 
@@ -38,7 +44,7 @@ It is recommended to update once a week
 
 `git pull`
 
-## Screenshot
+## Demo
 
 [![asciicast](https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD.svg)](https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD)
 
