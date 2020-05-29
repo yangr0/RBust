@@ -10,13 +10,15 @@ Contribution are always welcome, feel free to create issues and pull requests
 
 ## Features
 
-* Automatically picks the most amount of threads that your system can handle
+- Automatically picks the most amount of threads that your system can handle
 
-* Multi-thread
+- Multi-thread
 
-* Quick and easy CLI
+- Quick and easy CLI
 
-* Custom timeout
+- Custom timeout
+
+- Verbose output option
 
 ## Installation
 
