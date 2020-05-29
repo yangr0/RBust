@@ -5,9 +5,9 @@
 // 5/29/20
 
 // Dependencies
-use chrono;
+use chrono; // 0.4.11
 use clap::{App, Arg}; // 2.33.1
-use isahc::prelude::*; // 0.9.2
+use isahc::prelude::*; // 0.9.3
 use rayon::prelude::*; // 1.3.0
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
