@@ -1,6 +1,6 @@
 [package]
 name = "RBust"
-version = "0.1.3"
+version = "0.1.9"
 authors = ["inc0gnit0 <iinc0gni0t@pm.me>", "skript0r <skript0r@protonmail.com>"]
 edition = "2018"
 

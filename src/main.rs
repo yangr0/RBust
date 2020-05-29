@@ -1,8 +1,8 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.8
-// 5/28/20
+// v1.9
+// 5/29/20
 
 // Dependencies
 use chrono;
@@ -18,7 +18,7 @@ fn main() -> std::io::Result<()> {
     banner();
     // Command line arguments
     let args = App::new("RBust")
-        .version("v1.8")
+        .version("v1.9")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("RBust is a blazing fast web directory bruteforce tool")
         .args_from_usage(
@@ -92,10 +92,10 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.8\x1b[93m
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.9\x1b[93m
   ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r
                                 
-            \x1b[91mUse command: ./rbust for help\x1b[0m\n"
+            \x1b[91mUse command: ./RBust -h for help\x1b[0m\n"
     )
 }
 
