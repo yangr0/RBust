@@ -1,3 +1,7 @@
+# v2.0
+- Check for internet
+- Small adjustments
+
 # v1.9
 - Bug fixes
 

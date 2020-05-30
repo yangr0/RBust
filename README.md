@@ -48,6 +48,8 @@ It is recommended to update once a week
 
 `git pull`
 
+`./install.sh`
+
 ## Demo
 
 [![asciicast](https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD.svg)](https://asciinema.org/a/d2drRZkLdcA3YWgBL1ilnVAfD)

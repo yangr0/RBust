@@ -20,11 +20,11 @@ fn main() -> std::io::Result<()> {
     let args = App::new("RBust")
         .version("v1.9")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
-        .about("RBust is a blazing fast web directory bruteforce tool")
+        .about("Example: ./RBust -u https://example.com -w /home/inc0gnit0/RBust/default.txt")
         .args_from_usage(
             "
             -u, --url=[TARGET_URL] 'Sets your target URL(required)'
-            -w, --wordlist=[PATH_TO/_WORDLIST] 'Sets your wordlist file(required)'
+            -w, --wordlist=[PATH_TO_WORDLIST] 'Sets your wordlist file(required)'
             -t, --timeout=[SECONDS] 'Sets the timeout time in seconds Default(15)'
             -U, --user-agent=[USER_AGENT] 'Sets the user agent'",
         )
@@ -61,6 +61,11 @@ fn main() -> std::io::Result<()> {
         _ => println!(
             "\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!\x1b[0m"
         ),
+    }
+    // Check internet connection
+    match connection() {
+        Ok(send) => send,
+        Err(_) => panic!("\x1b[91mConnection not found!\x1b[0m"),
     }
     // Read file
     let mut urls: Vec<String> = Vec::new();
@@ -175,4 +180,14 @@ fn url_encode(data: &str) -> String {
         }
     }
     return buffer;
+}
+
+// Check for internet connection
+fn connection() -> Result<(), Box<dyn std::error::Error>> {
+    Request::head("https://github.com")
+        .timeout(Duration::new(15, 0))
+        .body("")?
+        .send()?;
+
+    Ok(())
 }
