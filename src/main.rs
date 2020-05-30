@@ -1,8 +1,8 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v1.9
-// 5/29/20
+// v2.0
+// 5/30/20
 
 // Dependencies
 use chrono; // 0.4.11
@@ -18,7 +18,7 @@ fn main() -> std::io::Result<()> {
     banner();
     // Command line arguments
     let args = App::new("RBust")
-        .version("v1.9")
+        .version("v2.0")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("Example: ./RBust -u https://example.com -w /home/inc0gnit0/RBust/default.txt")
         .args_from_usage(
@@ -77,7 +77,7 @@ fn main() -> std::io::Result<()> {
     }
     // Making multithreaded requests
     urls.par_iter()
-        .for_each(|url_path| 
+        .for_each(|url_path|
             match probe(&target_host, &url_path, verbose, timeout, ua) {
                 Ok(request) => request,
                 Err(e) => println!("\x1b[31mSomething went wrong, please check if the URL is valid and try changing the timeout time\nError: {}\n\x1b[0m", e),
@@ -97,7 +97,7 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv1.9\x1b[93m
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv2.0\x1b[93m
   ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r
                                 
             \x1b[91mUse command: ./RBust -h for help\x1b[0m\n"
