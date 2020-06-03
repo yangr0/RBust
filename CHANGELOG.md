@@ -1,3 +1,6 @@
+# v2.1
+- Added word extensions
+
 # v2.0
 - Check for internet
 - Small adjustments

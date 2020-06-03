@@ -1,8 +1,8 @@
 // https://github.com/iinc0gnit0/RBust
 // You may copy this tool but please give credit :)
 // Created by inc0gnit0 / skript0r
-// v2.0
-// 5/30/20
+// v2.1
+// 6/3/20
 
 // Dependencies
 use chrono; // 0.4.11
@@ -18,7 +18,7 @@ fn main() -> std::io::Result<()> {
     banner();
     // Command line arguments
     let args = App::new("RBust")
-        .version("v2.0")
+        .version("v2.1")
         .author("inc0gnit0 <iinc0gnit0@pm.me> | skript0r <skript0r@protonmail.com>")
         .about("Example: ./RBust -u https://example.com -w /home/inc0gnit0/RBust/default.txt")
         .args_from_usage(
@@ -26,7 +26,8 @@ fn main() -> std::io::Result<()> {
             -u, --url=[TARGET_URL] 'Sets your target URL(required)'
             -w, --wordlist=[PATH_TO_WORDLIST] 'Sets your wordlist file(required)'
             -t, --timeout=[SECONDS] 'Sets the timeout time in seconds Default(15)'
-            -U, --user-agent=[USER_AGENT] 'Sets the user agent'",
+            -U, --user-agent=[USER_AGENT] 'Sets the user agent'
+            -e, --extension=[EXTENSION] 'Adds extension to wordlist Example: .txt'",
         )
         .arg(
             Arg::with_name("v")
@@ -41,6 +42,7 @@ fn main() -> std::io::Result<()> {
     let mut verbose = 0;
     let mut timeout = 15;
     let mut ua = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"; // User agent
+    let mut extension = "0";
     match args.occurrences_of("v") {
         0 => verbose = 0,
         1 => verbose = 1,
@@ -62,6 +64,13 @@ fn main() -> std::io::Result<()> {
             "\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!\x1b[0m"
         ),
     }
+    match args.occurrences_of("extension") {
+        0 => extension = extension,
+        1 => extension = args.value_of("extension").unwrap(),
+        _ => println!(
+            "\x1b[91mSomething went wrong!\nPlease make sure you typed everything right!\x1b[0m"
+        ),
+    }
     // Check internet connection
     match connection() {
         Ok(send) => send,
@@ -71,9 +80,16 @@ fn main() -> std::io::Result<()> {
     let mut urls: Vec<String> = Vec::new();
     let fd = File::open(wordlist)?;
     for url in BufReader::new(fd).lines() {
-        let url = url.unwrap();
-        let url = url.trim().to_owned();
-        urls.push(url);
+        if extension == "0" {
+            let url = url.unwrap();
+            let url = url.trim().to_owned();
+            urls.push(url);
+        } else {
+            let url = url.unwrap();
+            let url = format!("{}{}", url, extension);
+            let url = url.trim().to_owned();
+            urls.push(url);
+        }
     }
     // Making multithreaded requests
     urls.par_iter()
@@ -97,7 +113,7 @@ fn banner() {
 ▀▀███▀▀▀▀▀   ▀▀███▀▀▀██▄  ███    ███ ▀███████████     ███     
 ▀███████████   ███    ██▄ ███    ███          ███     ███     
   ███    ███   ███    ███ ███    ███    ▄█    ███     ███     
-  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv2.0\x1b[93m
+  ███    ███ ▄█████████▀  ████████▀   ▄████████▀     ▄████▀   \x1b[92mv2.1\x1b[93m
   ███    ███\x1b[92m      Created by: inc0gnit0 / skript0r
                                 
             \x1b[91mUse command: ./RBust -h for help\x1b[0m\n"
