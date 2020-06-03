@@ -20,6 +20,8 @@ Contribution are always welcome, feel free to create issues and pull requests
 
 - Verbose output option
 
+- Clean and safe error handling
+
 ## Installation
 
 Go to the following link to install the binary https://github.com/iinc0gnit0/RBust/releases
@@ -56,6 +58,6 @@ It is recommended to update once a week
 
 ## Still in the working!
 
-We are still working on to make it better so you may experience some bugs or errors. Please report them to one of the creators or create an issue.
+We are still working to make it better! You may experience some bugs or errors. Please report them to one of the creators or create an issue.
 
 ## Made with ❤️ by [inc0gnit0](https://github.com/iinc0gnit0) and [skript0r](https://github.com/green0ctagon)
