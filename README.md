@@ -22,6 +22,8 @@ Contribution are always welcome, feel free to create issues and pull requests
 
 - Clean and safe error handling
 
+- Search for specific extension option
+
 ## Installation
 
 Go to the following link to install the binary https://github.com/iinc0gnit0/RBust/releases
