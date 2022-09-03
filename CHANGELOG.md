@@ -1,3 +1,7 @@
+# v3.0
+- Improved error handling
+- Bug fixes
+
 # v2.1
 - Added word extensions
 

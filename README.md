@@ -10,7 +10,7 @@ Contribution are always welcome, feel free to create issues and pull requests
 
 ## Features
 
-- Automatically picks the most amount of threads that your system can handle
+- Fast speeds
 
 - Multi-thread
 
@@ -22,37 +22,37 @@ Contribution are always welcome, feel free to create issues and pull requests
 
 - Clean and safe error handling
 
-- Search for specific extension option
+- Supports custom file extension
+
+## Quick start (Recommended)
+
+Install the binary from https://github.com/iinc0gnit0/RBust/releases/latest
 
 ## Installation
 
-Go to the following link to install the binary https://github.com/iinc0gnit0/RBust/releases
+### Dependencies
 
-Manual installation instructions below:
+Arch-based: `openssl`
+
+Debian-based: `libssl-dev`
+
+### Clone from GitHub
 
 `git clone https://github.com/iinc0gnit0/RBust`
 
+### Compile RBust
+
 `cd RBust`
 
-`chmod +x install.sh`
+`cargo build --release`
 
-`./install.sh`
+Binary will be located at `target/release/RBust`
 
 ## Usage
 
-Example: `./rbust -u http://example.com -w default.txt`
+Example: `RBust -u http://example.com -w wordlist.txt`
 
-Show the help text using this command
-
-`./rbust --help`
-
-## Update
-
-It is recommended to update once a week
-
-`git pull`
-
-`./install.sh`
+You can find wordlists from https://github.com/gmelodie/awesome-wordlists
 
 ## Demo
 
